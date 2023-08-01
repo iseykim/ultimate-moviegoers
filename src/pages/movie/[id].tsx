@@ -2,6 +2,7 @@ import MainLayout from "@/components/MainLayout"
 import { Text, Heading, Stack, HStack, Tag, Center } from "@chakra-ui/react"
 import { GetServerSideProps } from "next"
 import Image from "next/image"
+import axios from "axios"
 
 /**
  * Partial Type
@@ -85,8 +86,10 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const { id } = context.params ?? {}
   if (id === undefined) throw new Error("id is undefined")
 
-  const res = await fetch(`https://api.themoviedb.org/3/movie/${id}?api_key=${process.env.NEXT_PUBLIC_API_KEY}`)
-  const movie: MovieDetails = await res.json()
+  const response = await axios.get(
+    `https://api.themoviedb.org/3/movie/${id}?api_key=${process.env.NEXT_PUBLIC_API_KEY}`,
+  )
+  const movie: MovieDetails = response.data
 
   return {
     props: {
